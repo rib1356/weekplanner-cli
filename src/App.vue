@@ -1,5 +1,5 @@
 <template>
-  <Navbar msg="Hello world"/>
+  <Navbar/>
   <div class="mx-3 my-2">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-4 session-container">
@@ -7,59 +7,7 @@
         <div class="row"> <!-- Each of the session Cards is here-->
           <div class="col-sm-12 col-md-12 col-lg-12 session-card-row">
             <div v-for="(session, index) in plannerData.Unscheduled" :key="session.name">
-              <div class="card session-card" :style="{ backgroundColor: session.type_colour}" v-if="session.isAssigned == false">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                      <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px">{{session.name}}</h3>
-                      <h4 class="card-text">Type: {{session.type}}</h4>
-                      <p class="icon-card-text"><i class="bi bi-stopwatch card-icons"></i> {{session.length}} min</p>
-                      <p class="icon-card-text"> | Intensity: {{session.target_intensity}} 
-                        <i v-if="session.target_intensity >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="session.target_intensity >= 5 && session.target_intensity < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="session.target_intensity >= 3 && session.target_intensity < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                        
-                      </p>
-                      <p class="icon-card-text"> | Fatigue: {{session.target_fatigue}} 
-                        <i v-if="session.target_fatigue >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="session.target_fatigue >= 5 && session.target_fatigue < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="session.target_fatigue >= 3 && session.target_fatigue < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">
-                      <button type="button" class="btn btn-primary" style="width: 100%; margin-top:5px;" @click="viewExtraSessionDetails(session)">Details</button>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-4">
-                      
-                      <!-- <datepicker :minimumView="'day'" :maximumView="'day'" 
-                                        placeholder="Select Session Date" 
-                                        :highlighted="state.highlighted" :disabled-dates="state2.disabled"
-                                        v-bind:id="index"></datepicker> -->
-                      <!-- <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dateSelector" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; margin-top:5px;">
-                          Choose Date
-                        </button>
-                        <ul class="dropdown-menu" style="width: 100%;">
-                          <li @click="sessionDateSelected('Monday', session)"><a class="dropdown-item">Monday</a></li>
-                          <li @click="sessionDateSelected('Tuesday', session)"><a class="dropdown-item">Tuesday</a></li>
-                          <li @click="sessionDateSelected('Wednesday', session)"><a class="dropdown-item">Wednesday</a></li>
-                          <li @click="sessionDateSelected('Thursday', session)"><a class="dropdown-item">Thursday</a></li>
-                          <li @click="sessionDateSelected('Friday', session)"><a class="dropdown-item">Friday</a></li>
-                          <li @click="sessionDateSelected('Saturday', session)"a class="dropdown-item">Saturday</a></li>
-                          <li @click="sessionDateSelected('Sunday', session)"><a class="dropdown-item">Sunday</a></li>
-                        </ul>
-                      </div> -->
-                    </div>
-                    <div class="col-sm-3 col-md-4 col-lg-4">
-                      <button type="button" class="btn btn-success" style="width: 100%; margin-top:5px;" @click="addSession(session, index)">Add Session</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <SessionCard :sessionComponent=session :index=index @viewDetailsClick="viewExtraSessionDetails(session)" @addSessionClick="addSession(session, index)"/>
             </div>
           </div>
         </div>
@@ -74,29 +22,7 @@
           </div>
           <div style="grid-column: 2; grid-row: 1;" class="weekday session-cards-column" >
               <div v-for="cardSession in plannerData.Monday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content"> <!-- Will be components-->
-                      <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px"></h3>
-                      <h4 class="card-text">Name: {{cardSession.name}} <i class="bi bi-trash3-fill trash-icon" @click="removeSession(cardSession)"></i></h4>
-                      <p class="icon-card-text"><i class="bi bi-stopwatch card-icons"></i> {{cardSession.length}} min</p>
-                      <p class="icon-card-text"> | Intensity: {{cardSession.target_intensity}} 
-                        <i v-if="cardSession.target_intensity >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="cardSession.target_intensity >= 5 && cardSession.target_intensity < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="cardSession.target_intensity >= 3 && cardSession.target_intensity < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                      </p>
-                      <p class="icon-card-text"> | Fatigue: {{cardSession.target_fatigue}} 
-                        <i v-if="cardSession.target_fatigue >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="cardSession.target_fatigue >= 5 && cardSession.target_fatigue < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="cardSession.target_fatigue >= 3 && cardSession.target_fatigue < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                      </p>
-                      <p class="card-text" v-if="cardSession.variation != null">Variation: <strong>{{cardSession.variation}}</strong></p>
-                    </div>
-                  </div>
-                </div>
-
+                <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
             </div>
           </div>
           <div style="grid-column: 1; grid-row: 2;" class="weekday weekday-column">
@@ -106,28 +32,7 @@
           </div>
           <div style="grid-column: 2; grid-row: 2;" class="weekday session-cards-column">
             <div v-for="cardSession in plannerData.Tuesday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
-                    <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px"></h3>
-                    <h4 class="card-text">Name: {{cardSession.name}} <i class="bi bi-trash3-fill trash-icon" @click="removeSession(cardSession)"></i></h4>
-                    <p class="icon-card-text"><i class="bi bi-stopwatch card-icons"></i> {{cardSession.length}} min</p>
-                    <p class="icon-card-text"> | Intensity: {{cardSession.target_intensity}} 
-                      <i v-if="cardSession.target_intensity >= 8" class="bi bi-reception-4 card-icons"></i>
-                      <i v-else-if="cardSession.target_intensity >= 5 && cardSession.target_intensity < 8" class="bi bi-reception-3 card-icons"></i>
-                      <i v-else-if="cardSession.target_intensity >= 3 && cardSession.target_intensity < 5" class="bi bi-reception-2 card-icons"></i>
-                      <i v-else class="bi bi-reception-1 card-icons"></i>
-                    </p>
-                    <p class="icon-card-text"> | Fatigue: {{cardSession.target_fatigue}} 
-                      <i v-if="cardSession.target_fatigue >= 8" class="bi bi-reception-4 card-icons"></i>
-                      <i v-else-if="cardSession.target_fatigue >= 5 && cardSession.target_fatigue < 8" class="bi bi-reception-3 card-icons"></i>
-                      <i v-else-if="cardSession.target_fatigue >= 3 && cardSession.target_fatigue < 5" class="bi bi-reception-2 card-icons"></i>
-                      <i v-else class="bi bi-reception-1 card-icons"></i>
-                    </p>
-                    <p class="card-text" v-if="cardSession.variation != null">Variation: <strong>{{cardSession.variation}}</strong></p>
-                  </div>
-                </div>
-              </div>
+              <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
             </div>
           </div>
           <div style="grid-column: 1; grid-row: 3;" class="weekday weekday-column">
@@ -137,28 +42,7 @@
           </div>
           <div style="grid-column: 2; grid-row: 3;" class="weekday session-cards-column">
               <div v-for="cardSession in plannerData.Wednesday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
-                      <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px"></h3>
-                      <h4 class="card-text">Name: {{cardSession.name}} <i class="bi bi-trash3-fill trash-icon" @click="removeSession(cardSession)"></i></h4>
-                      <p class="icon-card-text"><i class="bi bi-stopwatch card-icons"></i> {{cardSession.length}} min</p>
-                      <p class="icon-card-text"> | Intensity: {{cardSession.target_intensity}} 
-                        <i v-if="cardSession.target_intensity >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="cardSession.target_intensity >= 5 && cardSession.target_intensity < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="cardSession.target_intensity >= 3 && cardSession.target_intensity < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                      </p>
-                      <p class="icon-card-text"> | Fatigue: {{cardSession.target_fatigue}} 
-                        <i v-if="cardSession.target_fatigue >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="cardSession.target_fatigue >= 5 && cardSession.target_fatigue < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="cardSession.target_fatigue >= 3 && cardSession.target_fatigue < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                      </p>
-                      <p class="card-text" v-if="cardSession.variation != null">Variation: <strong>{{cardSession.variation}}</strong></p>
-                    </div>
-                  </div>
-                </div>
+                <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
               </div>
           </div>
           <div style="grid-column: 1; grid-row: 4;" class="weekday weekday-column">
@@ -168,28 +52,7 @@
           </div>
           <div style="grid-column: 2; grid-row: 4;" class="weekday session-cards-column">
               <div v-for="cardSession in plannerData.Thursday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
-                      <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px"></h3>
-                      <h4 class="card-text">Name: {{cardSession.name}} <i class="bi bi-trash3-fill trash-icon" @click="removeSession(cardSession)"></i></h4>
-                      <p class="icon-card-text"><i class="bi bi-stopwatch card-icons"></i> {{cardSession.length}} min</p>
-                      <p class="icon-card-text"> | Intensity: {{cardSession.target_intensity}} 
-                        <i v-if="cardSession.target_intensity >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="cardSession.target_intensity >= 5 && cardSession.target_intensity < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="cardSession.target_intensity >= 3 && cardSession.target_intensity < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                      </p>
-                      <p class="icon-card-text"> | Fatigue: {{cardSession.target_fatigue}} 
-                        <i v-if="cardSession.target_fatigue >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="cardSession.target_fatigue >= 5 && cardSession.target_fatigue < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="cardSession.target_fatigue >= 3 && cardSession.target_fatigue < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                      </p>
-                      <p class="card-text" v-if="cardSession.variation != null">Variation: <strong>{{cardSession.variation}}</strong></p>
-                    </div>
-                  </div>
-                </div>
+                <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
               </div>
           </div>
           <div style="grid-column: 1; grid-row: 5;" class="weekday weekday-column">
@@ -199,28 +62,7 @@
           </div>
           <div style="grid-column: 2; grid-row: 5;" class="weekday session-cards-column">
               <div v-for="cardSession in plannerData.Friday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
-                      <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px"></h3>
-                      <h4 class="card-text">Name: {{cardSession.name}} <i class="bi bi-trash3-fill trash-icon" @click="removeSession(cardSession)"></i></h4>
-                      <p class="icon-card-text"><i class="bi bi-stopwatch card-icons"></i> {{cardSession.length}} min</p>
-                      <p class="icon-card-text"> | Intensity: {{cardSession.target_intensity}} 
-                        <i v-if="cardSession.target_intensity >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="cardSession.target_intensity >= 5 && cardSession.target_intensity < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="cardSession.target_intensity >= 3 && cardSession.target_intensity < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                      </p>
-                      <p class="icon-card-text"> | Fatigue: {{cardSession.target_fatigue}} 
-                        <i v-if="cardSession.target_fatigue >= 8" class="bi bi-reception-4 card-icons"></i>
-                        <i v-else-if="cardSession.target_fatigue >= 5 && cardSession.target_fatigue < 8" class="bi bi-reception-3 card-icons"></i>
-                        <i v-else-if="cardSession.target_fatigue >= 3 && cardSession.target_fatigue < 5" class="bi bi-reception-2 card-icons"></i>
-                        <i v-else class="bi bi-reception-1 card-icons"></i>
-                      </p>
-                      <p class="card-text" v-if="cardSession.variation != null">Variation: <strong>{{cardSession.variation}}</strong></p>
-                    </div>
-                  </div>
-                </div>
+                <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
               </div>
           </div>
           <div style="grid-column: 1; grid-row: 6;" class="weekday weekday-column">
@@ -230,26 +72,7 @@
           </div>
           <div style="grid-column: 2; grid-row: 6;" class="weekday session-cards-column">
               <div v-for="cardSession in plannerData.Saturday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
-                <div class="card-body">
-                  <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
-                    <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px"></h3>
-                    <h4 class="card-text">Name: {{cardSession.name}} <i class="bi bi-trash3-fill trash-icon" @click="removeSession(cardSession)"></i></h4>
-                    <p class="icon-card-text"><i class="bi bi-stopwatch card-icons"></i> {{cardSession.length}} min</p>
-                    <p class="icon-card-text"> | Intensity: {{cardSession.target_intensity}} 
-                      <i v-if="cardSession.target_intensity >= 8" class="bi bi-reception-4 card-icons"></i>
-                      <i v-else-if="cardSession.target_intensity >= 5 && cardSession.target_intensity < 8" class="bi bi-reception-3 card-icons"></i>
-                      <i v-else-if="cardSession.target_intensity >= 3 && cardSession.target_intensity < 5" class="bi bi-reception-2 card-icons"></i>
-                      <i v-else class="bi bi-reception-1 card-icons"></i>
-                    </p>
-                    <p class="icon-card-text"> | Fatigue: {{cardSession.target_fatigue}} 
-                      <i v-if="cardSession.target_fatigue >= 8" class="bi bi-reception-4 card-icons"></i>
-                      <i v-else-if="cardSession.target_fatigue >= 5 && cardSession.target_fatigue < 8" class="bi bi-reception-3 card-icons"></i>
-                      <i v-else-if="cardSession.target_fatigue >= 3 && cardSession.target_fatigue < 5" class="bi bi-reception-2 card-icons"></i>
-                      <i v-else class="bi bi-reception-1 card-icons"></i>
-                    </p>
-                    <p class="card-text" v-if="cardSession.variation != null">Variation: <strong>{{cardSession.variation}}</strong></p>
-                  </div>
-                </div>
+                <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
               </div>
           </div>
           <div style="grid-column: 1; grid-row: 7;" class="weekday weekday-column">
@@ -259,26 +82,7 @@
           </div>
           <div style="grid-column: 2; grid-row: 7;" class="weekday session-cards-column">
               <div v-for="cardSession in plannerData.Sunday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
-                <div class="card-body">
-                  <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
-                    <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px"></h3>
-                    <h4 class="card-text">Name: {{cardSession.name}} <i class="bi bi-trash3-fill trash-icon" @click="removeSession(cardSession)"></i></h4>
-                    <p class="icon-card-text"><i class="bi bi-stopwatch card-icons"></i> {{cardSession.length}} min</p>
-                    <p class="icon-card-text"> | Intensity: {{cardSession.target_intensity}} 
-                      <i v-if="cardSession.target_intensity >= 8" class="bi bi-reception-4 card-icons"></i>
-                      <i v-else-if="cardSession.target_intensity >= 5 && cardSession.target_intensity < 8" class="bi bi-reception-3 card-icons"></i>
-                      <i v-else-if="cardSession.target_intensity >= 3 && cardSession.target_intensity < 5" class="bi bi-reception-2 card-icons"></i>
-                      <i v-else class="bi bi-reception-1 card-icons"></i>
-                    </p>
-                    <p class="icon-card-text"> | Fatigue: {{cardSession.target_fatigue}} 
-                      <i v-if="cardSession.target_fatigue >= 8" class="bi bi-reception-4 card-icons"></i>
-                      <i v-else-if="cardSession.target_fatigue >= 5 && cardSession.target_fatigue < 8" class="bi bi-reception-3 card-icons"></i>
-                      <i v-else-if="cardSession.target_fatigue >= 3 && cardSession.target_fatigue < 5" class="bi bi-reception-2 card-icons"></i>
-                      <i v-else class="bi bi-reception-1 card-icons"></i>
-                    </p>
-                    <p class="card-text" v-if="cardSession.variation != null">Variation: <strong>{{cardSession.variation}}</strong></p>
-                  </div>
-                </div>
+                <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
               </div>
           </div>
         </div>
@@ -340,22 +144,25 @@
 </template>
 
 <script>
-// import SessionCard from './components/SessionCard.vue'
+//Import Components
+import SessionCard from './components/SessionCard.vue'
+import ChosenSessionCard from './components/ChosenSessionCard.vue'
 import Navbar from './components/Navbar.vue'
-// import Datepicker from 'vuejs-datepicker';
+
 import $ from 'jquery'
+import jsonData from '../data.json' //Import the json data
 
 export default {
   name: 'App',
   components: {
     Navbar,
-    // SessionCard,
-    // Datepicker
+    SessionCard,
+    ChosenSessionCard,
   },
   data() {
     return {
       toShow: true,
-      plannerData: {},
+      plannerData: jsonData, //Set the json data to be used within system
       sessionTypes: [],
       selectedSession: {},
       sessionLengths: { //Object of arrays to calculate session lengths
@@ -397,178 +204,11 @@ export default {
     }
   },
   mounted() {
-    console.log("mounted")
-    //Unable to read the data locally from json opening from just a HTML file due to security?
-    //Running through a local server should be easy enough to read and then assign to variable
-    //Could host json file somewhere and make an ajax query to it.
-    // $.getJSON("data.json", function(json) {
-    //   console.log(json)
-    // });
-      this.plannerData = {
-        "Unscheduled": [
-          {
-              "name": "Max Hangs",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Strength and Power",
-              "type_colour": "#ff968a",
-              "length": 20,
-              "target_intensity": 9,
-              "target_fatigue": 4,
-              "variation": "Four finger Half Crimp"
-          },
-          {
-              "name": "Max Hangs",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Strength and Power",
-              "type_colour": "#ff968a",
-              "length": 20,
-              "target_intensity": 9,
-              "target_fatigue": 4,
-              "variation": "Four finger Half Crimp"
-          },
-          {
-              "name": "1 on 1 off",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Endurance",
-              "type_colour": "#a7bed3",
-              "length": 20,
-              "target_intensity": 4,
-              "target_fatigue": 4,
-              "variation": null
-          },
-          {
-              "name": "1 on 1 off",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Endurance",
-              "type_colour": "#a7bed3",
-              "length": 20,
-              "target_intensity": 4,
-              "target_fatigue": 4,
-              "variation": null
-          },
-          {
-              "name": "Regen",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Endurance",
-              "type_colour": "#a7bed3",
-              "length": 20,
-              "target_intensity": 2,
-              "target_fatigue": 3,
-              "variation": null
-          },
-          {
-              "name": "Regen",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Endurance",
-              "type_colour": "#a7bed3",
-              "length": 20,
-              "target_intensity": 2,
-              "target_fatigue": 4,
-              "variation": null
-          },
-          {
-              "name": "4 x 4",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Power Endurance",
-              "type_colour": "#97c1a9",
-              "length": 60,
-              "target_intensity": 8,
-              "target_fatigue": 8,
-              "variation": null
-          },
-          {
-              "name": "4 x 4",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Power Endurance",
-              "type_colour": "#97c1a9",
-              "length": 60,
-              "target_intensity": 7,
-              "target_fatigue": 8,
-              "variation": null
-          },
-          {
-              "name": "Press Ups",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Conditioning",
-              "type_colour": "#ffffb5",
-              "length": 25,
-              "target_intensity": 6,
-              "target_fatigue": 5,
-              "variation": null
-          },
-          {
-              "name": "Press Ups",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Conditioning",
-              "type_colour": "#ffffb5",
-              "length": 25,
-              "target_intensity": 6,
-              "target_fatigue": 5,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          }
-          ],
-          "Monday": [],
-          "Tuesday": [],
-          "Wednesday": [],
-          "Thursday": [],
-          "Friday": [],
-          "Saturday": [],
-          "Sunday": []
-        }
-      for(var i = 0; i < this.plannerData.Unscheduled.length; i++) {
-        this.plannerData.Unscheduled[i].isAssigned = false;
-        this.plannerData.Unscheduled[i].dateSelected = null;
-      }
+    //On load of page after json data has been read assign some new variables
+    for(var i = 0; i < this.plannerData.Unscheduled.length; i++) {
+      this.plannerData.Unscheduled[i].isAssigned = false;
+      this.plannerData.Unscheduled[i].dateSelected = null;
+    }
     },
   methods: {
     sessionDateSelected(dateSelected, selectedSession) {
@@ -582,42 +222,46 @@ export default {
     closeSessionDetailModal() {
       $('#extraSessionDetailModal').hide();
     },
-    addSession(selectedSession) {
-      var result = this.plannerData.Unscheduled.filter(function(obj){return obj.name == selectedSession.name && obj.isAssigned == false}); //Find all sessions that belong to what has been chosen
-      var selectedResult = result[result.length - 1];
-      if (selectedResult.dateSelected == null) { //If the date is null dont add it and show error
+    addSession(selectedSession, index) {
+       var datePickerValue = $('#'+index).val().split("-") //dd-MM-yyyy
+      // //Do some shuffling to get the day of the week
+      var formattedValue = datePickerValue[2] + " " + datePickerValue[1] + " " + datePickerValue[0] //yyyy-MM-dd
+      const formattedDate = new Date(formattedValue);
+      const dayofWeek = formattedDate.getDay(); // Sunday - Saturday : 0 - 6
+      if (isNaN(dayofWeek)) {
         alert("No date selected - Please choose a date that you want to complete your workout on.")
-      } else { 
-        switch (selectedResult.dateSelected) {
-          case "Monday":
-            this.validateSessionAndAddSession(this.sessionLengths.Monday, this.plannerData.Monday, selectedResult)
+      } else {
+        switch (dayofWeek) {
+          case 0: //Sunday
+            this.validateSessionAndAddSession(this.sessionLengths.Sunday, this.plannerData.Sunday, selectedSession, "Sunday") //Pass any allocated sessions data for that date and the session that has just been picked
             break;
-          case "Tuesday":
-            this.validateSessionAndAddSession(this.sessionLengths.Tuesday, this.plannerData.Tuesday, selectedResult)
+          case 1: 
+            this.validateSessionAndAddSession(this.sessionLengths.Monday, this.plannerData.Monday, selectedSession, "Monday")
             break;
-          case "Wednesday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Wednesday, this.plannerData.Wednesday, selectedResult)
+          case 2: 
+            this.validateSessionAndAddSession(this.sessionLengths.Tuesday, this.plannerData.Tuesday, selectedSession, "Tuesday")
             break;
-          case "Thursday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Thursday, this.plannerData.Thursday, selectedResult)
+          case 3: 
+            this.validateSessionAndAddSession(this.sessionLengths.Wednesday, this.plannerData.Wednesday, selectedSession, "Wednesday")
             break;
-          case "Friday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Friday, this.plannerData.Friday, selectedResult)
+          case 4: 
+            this.validateSessionAndAddSession(this.sessionLengths.Thursday, this.plannerData.Thursday, selectedSession, "Thursday")
             break;
-          case "Saturday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Saturday, this.plannerData.Saturday, selectedResult)
+          case 5: 
+            this.validateSessionAndAddSession(this.sessionLengths.Friday, this.plannerData.Friday, selectedSession, "Friday")
             break;
-          case "Sunday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Sunday, this.plannerData.Sunday, selectedResult)
+          case 6: 
+            this.validateSessionAndAddSession(this.sessionLengths.Saturday, this.plannerData.Saturday, selectedSession, "Saturday")
             break;
         }
       }
     },
-    validateSessionAndAddSession(sessionLengthDate, plannerData, selectedResult) {
+    validateSessionAndAddSession(sessionLengthDate, plannerData, selectedResult, date) {
       if ((parseInt(sessionLengthDate.reduce((partialSum, a) => partialSum + a, 0)) + selectedResult.length) <= 60) { //Calculate if the amount in the array is greater than expected 
         sessionLengthDate.push(selectedResult.length)   
         plannerData.push(selectedResult) //Push the latest one into the correct date
         selectedResult.isAssigned = true; //Assign the latest session in the array based of the length of session that are unassigned
+        selectedResult.dateSelected = date;
       } else {
         alert("Session length will be greater than 1 hour")
       }
@@ -633,7 +277,7 @@ export default {
           plannerDataArray[i].splice(indexOfObject, 1) //Once index has been found remove
         }
       }
-
+      console.log(cardSession)
       //Remove the session time and recalculate
       var sessionLengthArray = Object.values(this.sessionLengths);
       var lengthToRemoveFrom = null;
