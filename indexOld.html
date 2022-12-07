@@ -1,9 +1,34 @@
-<template>
-  <Navbar msg="Hello world"/>
+<html lang="en">
+<head>
+  <title>Weekly Training Schedule</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧗</text></svg>">
+  <!-- Bootstrap and any other styling I need-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="weekPlannerStyles.css">
+</head>
+
+<div id="app">
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="./assets/latticeLogo.png" alt="latticeLogo" width="50" height="50" style="margin-left:10px">
+          Week Planner
+        </a>
+      <form class="form-inline">
+        <a class="navbar-brand" href="#" style="float:left">
+          Rob
+          <i class="bi bi-person-circle"></i>
+        </a>
+      </form>
+    </div>
+  </nav>
   <div class="mx-3 my-2">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-4 session-container">
-        <h2 class="session-text">Sessions</h2>
+        <h2 style="text-align: center">Sessions</h2>
         <div class="row"> <!-- Each of the session Cards is here-->
           <div class="col-sm-12 col-md-12 col-lg-12 session-card-row">
             <div v-for="(session, index) in plannerData.Unscheduled" :key="session.name">
@@ -35,10 +60,10 @@
                     </div>
                     <div class="col-sm-6 col-md-4 col-lg-4">
                       
-                      <!-- <datepicker :minimumView="'day'" :maximumView="'day'" 
+                      <vuejs-datepicker :minimumView="'day'" :maximumView="'day'" 
                                         placeholder="Select Session Date" 
                                         :highlighted="state.highlighted" :disabled-dates="state2.disabled"
-                                        v-bind:id="index"></datepicker> -->
+                                        v-bind:id="index"></vuejs-datepicker>
                       <!-- <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dateSelector" data-bs-toggle="dropdown" aria-expanded="false" style="width: 100%; margin-top:5px;">
                           Choose Date
@@ -67,13 +92,13 @@
       <div class="col-sm-12 col-md-12 col-lg-8 session-container">
         <h2 class="session-text">Weekly Log</h2>
         <div class="weekday-grid-wrapper"> <!-- Using Grid template here instead of bootstraps rows/cols-->
-          <div style="grid-column: 1; grid-row: 1;" class="weekday weekday-column">
+          <div style="grid-column: 1; grid-row: 1; background-color: #F8A3A8;" class="weekday weekday-column">
             <p class="weekday-text">Monday</p>
             <p class="session-length-text" v-if="sessionLengths.Monday.reduce((partialSum, a) => partialSum + a, 0) > 0">Session Length: {{sessionLengths.Monday.reduce((partialSum, a) => partialSum + a, 0)}} min </p>
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 1;" class="weekday session-cards-column" >
-              <div v-for="cardSession in plannerData.Monday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Monday" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content"> <!-- Will be components-->
@@ -99,13 +124,13 @@
 
             </div>
           </div>
-          <div style="grid-column: 1; grid-row: 2;" class="weekday weekday-column">
+          <div style="grid-column: 1; grid-row: 2; background-color: #F3C6A5;" class="weekday weekday-column">
             <p class="weekday-text">Tuesday</p>
             <p class="session-length-text" v-if="sessionLengths.Tuesday.reduce((partialSum, a) => partialSum + a, 0) > 0">Session Length: {{sessionLengths.Tuesday.reduce((partialSum, a) => partialSum + a, 0)}} min</p>
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 2;" class="weekday session-cards-column">
-            <div v-for="cardSession in plannerData.Tuesday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+            <div v-for="cardSession in plannerData.Tuesday" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
               <div class="card-body">
                 <div class="row">
                   <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
@@ -130,13 +155,13 @@
               </div>
             </div>
           </div>
-          <div style="grid-column: 1; grid-row: 3;" class="weekday weekday-column">
+          <div style="grid-column: 1; grid-row: 3; background-color: #E5E1AB;" class="weekday weekday-column">
             <p class="weekday-text">Wednesday</p>
             <p class="session-length-text" v-if="sessionLengths.Wednesday.reduce((partialSum, a) => partialSum + a, 0) > 0">Session Length: {{sessionLengths.Wednesday.reduce((partialSum, a) => partialSum + a, 0)}} min</p>
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 3;" class="weekday session-cards-column">
-              <div v-for="cardSession in plannerData.Wednesday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Wednesday" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
@@ -161,13 +186,13 @@
                 </div>
               </div>
           </div>
-          <div style="grid-column: 1; grid-row: 4;" class="weekday weekday-column">
+          <div style="grid-column: 1; grid-row: 4; background-color: #9CDCAA;" class="weekday weekday-column">
             <p class="weekday-text">Thursday</p>
             <p class="session-length-text" v-if="sessionLengths.Thursday.reduce((partialSum, a) => partialSum + a, 0) > 0">Session Length: {{sessionLengths.Thursday.reduce((partialSum, a) => partialSum + a, 0)}} min</p>
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 4;" class="weekday session-cards-column">
-              <div v-for="cardSession in plannerData.Thursday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Thursday" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
@@ -192,13 +217,13 @@
                 </div>
               </div>
           </div>
-          <div style="grid-column: 1; grid-row: 5;" class="weekday weekday-column">
+          <div style="grid-column: 1; grid-row: 5; background-color: 96CAF7;" class="weekday weekday-column">
             <p class="weekday-text">Friday</p>
             <p class="session-length-text" v-if="sessionLengths.Friday.reduce((partialSum, a) => partialSum + a, 0) > 0">Session Length: {{sessionLengths.Friday.reduce((partialSum, a) => partialSum + a, 0)}} min</p>
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 5;" class="weekday session-cards-column">
-              <div v-for="cardSession in plannerData.Friday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Friday" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
@@ -223,13 +248,13 @@
                 </div>
               </div>
           </div>
-          <div style="grid-column: 1; grid-row: 6;" class="weekday weekday-column">
+          <div style="grid-column: 1; grid-row: 6; background-color: #BFB2F3;" class="weekday weekday-column">
             <p class="weekday-text">Saturday</p>
             <p class="session-length-text" v-if="sessionLengths.Saturday.reduce((partialSum, a) => partialSum + a, 0) > 0">Session Length: {{sessionLengths.Saturday.reduce((partialSum, a) => partialSum + a, 0)}} min</p>
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 6;" class="weekday session-cards-column">
-              <div v-for="cardSession in plannerData.Saturday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Saturday" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <div class="card-body">
                   <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
                     <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px"></h3>
@@ -252,13 +277,13 @@
                 </div>
               </div>
           </div>
-          <div style="grid-column: 1; grid-row: 7;" class="weekday weekday-column">
+          <div style="grid-column: 1; grid-row: 7; background-color: #97C1A9;" class="weekday weekday-column">
             <p class="weekday-text">Sunday</p>     
             <p class="session-length-text" v-if="sessionLengths.Sunday.reduce((partialSum, a) => partialSum + a, 0) > 0">Session Length: {{sessionLengths.Sunday.reduce((partialSum, a) => partialSum + a, 0)}} min</p>
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 7;" class="weekday session-cards-column">
-              <div v-for="cardSession in plannerData.Sunday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Sunday" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <div class="card-body">
                   <div class="col-sm-12 col-md-12 col-lg-12" style="height: fit-content">
                     <h3 class="card-title" style="font-weight:bold; margin-bottom: 0px"></h3>
@@ -284,9 +309,9 @@
         </div>
       </div>  
     </div>
-
+  </div>
   
-  <div class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="extraSessionDetailModal">
+  <div class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="extraSessionDetailModal">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
@@ -337,20 +362,20 @@
     </div>
   </div>
 </div>
-</template>
+
+<script src="https://unpkg.com/vuejs-datepicker"></script>
+<!--<script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
 
 <script>
-// import SessionCard from './components/SessionCard.vue'
-import Navbar from './components/Navbar.vue'
-// import Datepicker from 'vuejs-datepicker';
-import $ from 'jquery'
-
-export default {
-  name: 'App',
+const app = new Vue({
+  el: '#app',
   components: {
-    Navbar,
-    // SessionCard,
-    // Datepicker
+    vuejsDatepicker,
   },
   data() {
     return {
@@ -394,221 +419,232 @@ export default {
           },
         }
       },
-    }
+      globalDate: new Date(),
+  }
   },
   mounted() {
     console.log("mounted")
+  
     //Unable to read the data locally from json opening from just a HTML file due to security?
     //Running through a local server should be easy enough to read and then assign to variable
     //Could host json file somewhere and make an ajax query to it.
+
     // $.getJSON("data.json", function(json) {
     //   console.log(json)
     // });
-      this.plannerData = {
-        "Unscheduled": [
-          {
-              "name": "Max Hangs",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Strength and Power",
-              "type_colour": "#ff968a",
-              "length": 20,
-              "target_intensity": 9,
-              "target_fatigue": 4,
-              "variation": "Four finger Half Crimp"
-          },
-          {
-              "name": "Max Hangs",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Strength and Power",
-              "type_colour": "#ff968a",
-              "length": 20,
-              "target_intensity": 9,
-              "target_fatigue": 4,
-              "variation": "Four finger Half Crimp"
-          },
-          {
-              "name": "1 on 1 off",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Endurance",
-              "type_colour": "#a7bed3",
-              "length": 20,
-              "target_intensity": 4,
-              "target_fatigue": 4,
-              "variation": null
-          },
-          {
-              "name": "1 on 1 off",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Endurance",
-              "type_colour": "#a7bed3",
-              "length": 20,
-              "target_intensity": 4,
-              "target_fatigue": 4,
-              "variation": null
-          },
-          {
-              "name": "Regen",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Endurance",
-              "type_colour": "#a7bed3",
-              "length": 20,
-              "target_intensity": 2,
-              "target_fatigue": 3,
-              "variation": null
-          },
-          {
-              "name": "Regen",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Endurance",
-              "type_colour": "#a7bed3",
-              "length": 20,
-              "target_intensity": 2,
-              "target_fatigue": 4,
-              "variation": null
-          },
-          {
-              "name": "4 x 4",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Power Endurance",
-              "type_colour": "#97c1a9",
-              "length": 60,
-              "target_intensity": 8,
-              "target_fatigue": 8,
-              "variation": null
-          },
-          {
-              "name": "4 x 4",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Power Endurance",
-              "type_colour": "#97c1a9",
-              "length": 60,
-              "target_intensity": 7,
-              "target_fatigue": 8,
-              "variation": null
-          },
-          {
-              "name": "Press Ups",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Conditioning",
-              "type_colour": "#ffffb5",
-              "length": 25,
-              "target_intensity": 6,
-              "target_fatigue": 5,
-              "variation": null
-          },
-          {
-              "name": "Press Ups",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Conditioning",
-              "type_colour": "#ffffb5",
-              "length": 25,
-              "target_intensity": 6,
-              "target_fatigue": 5,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          },
-          {
-              "name": "Yoga",
-              "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-              "type": "Flexibility",
-              "type_colour": "#b28dff",
-              "length": 20,
-              "target_intensity": 3,
-              "target_fatigue": 2,
-              "variation": null
-          }
-          ],
-          "Monday": [],
-          "Tuesday": [],
-          "Wednesday": [],
-          "Thursday": [],
-          "Friday": [],
-          "Saturday": [],
-          "Sunday": []
+
+    this.plannerData = {
+      "Unscheduled": [
+        {
+            "name": "Max Hangs",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Strength and Power",
+            "type_colour": "#ff968a",
+            "length": 20,
+            "target_intensity": 9,
+            "target_fatigue": 4,
+            "variation": "Four finger Half Crimp"
+        },
+        {
+            "name": "Max Hangs",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Strength and Power",
+            "type_colour": "#ff968a",
+            "length": 20,
+            "target_intensity": 9,
+            "target_fatigue": 4,
+            "variation": "Four finger Half Crimp"
+        },
+        {
+            "name": "1 on 1 off",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Endurance",
+            "type_colour": "#a7bed3",
+            "length": 20,
+            "target_intensity": 4,
+            "target_fatigue": 4,
+            "variation": null
+        },
+        {
+            "name": "1 on 1 off",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Endurance",
+            "type_colour": "#a7bed3",
+            "length": 20,
+            "target_intensity": 4,
+            "target_fatigue": 4,
+            "variation": null
+        },
+        {
+            "name": "Regen",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Endurance",
+            "type_colour": "#a7bed3",
+            "length": 20,
+            "target_intensity": 2,
+            "target_fatigue": 3,
+            "variation": null
+        },
+        {
+            "name": "Regen",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Endurance",
+            "type_colour": "#a7bed3",
+            "length": 20,
+            "target_intensity": 2,
+            "target_fatigue": 4,
+            "variation": null
+        },
+        {
+            "name": "4 x 4",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Power Endurance",
+            "type_colour": "#97c1a9",
+            "length": 60,
+            "target_intensity": 8,
+            "target_fatigue": 8,
+            "variation": null
+        },
+        {
+            "name": "4 x 4",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Power Endurance",
+            "type_colour": "#97c1a9",
+            "length": 60,
+            "target_intensity": 7,
+            "target_fatigue": 8,
+            "variation": null
+        },
+        {
+            "name": "Press Ups",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Conditioning",
+            "type_colour": "#ffffb5",
+            "length": 25,
+            "target_intensity": 6,
+            "target_fatigue": 5,
+            "variation": null
+        },
+        {
+            "name": "Press Ups",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Conditioning",
+            "type_colour": "#ffffb5",
+            "length": 25,
+            "target_intensity": 6,
+            "target_fatigue": 5,
+            "variation": null
+        },
+        {
+            "name": "Yoga",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Flexibility",
+            "type_colour": "#b28dff",
+            "length": 20,
+            "target_intensity": 3,
+            "target_fatigue": 2,
+            "variation": null
+        },
+        {
+            "name": "Yoga",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Flexibility",
+            "type_colour": "#b28dff",
+            "length": 20,
+            "target_intensity": 3,
+            "target_fatigue": 2,
+            "variation": null
+        },
+        {
+            "name": "Yoga",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Flexibility",
+            "type_colour": "#b28dff",
+            "length": 20,
+            "target_intensity": 3,
+            "target_fatigue": 2,
+            "variation": null
+        },
+        {
+            "name": "Yoga",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Flexibility",
+            "type_colour": "#b28dff",
+            "length": 20,
+            "target_intensity": 3,
+            "target_fatigue": 2,
+            "variation": null
+        },
+        {
+            "name": "Yoga",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "type": "Flexibility",
+            "type_colour": "#b28dff",
+            "length": 20,
+            "target_intensity": 3,
+            "target_fatigue": 2,
+            "variation": null
         }
-      for(var i = 0; i < this.plannerData.Unscheduled.length; i++) {
-        this.plannerData.Unscheduled[i].isAssigned = false;
-        this.plannerData.Unscheduled[i].dateSelected = null;
+        ],
+        "Monday": [],
+        "Tuesday": [],
+        "Wednesday": [],
+        "Thursday": [],
+        "Friday": [],
+        "Saturday": [],
+        "Sunday": []
       }
-    },
+    for(i = 0; i < this.plannerData.Unscheduled.length; i++) {
+      this.plannerData.Unscheduled[i].isAssigned = false;
+      this.plannerData.Unscheduled[i].dateSelected = null;
+    }
+  },
   methods: {
     sessionDateSelected(dateSelected, selectedSession) {
       var result  = this.plannerData.Unscheduled.filter(function(obj){return obj.name == selectedSession.name && obj.isAssigned == false}); //Find all sessions that belong to what has been chosen
       result[result.length - 1].dateSelected = dateSelected; //Assign the latest session in the array based of the length of session that are unassigned 
     },
     viewExtraSessionDetails(session) {
-      this.selectedSession = session;
+      this.selectedSession = session
+      var s = $('#0').val()
+      var d = new Date();
+      console.log(d.getDay(s))
       $('#extraSessionDetailModal').show();
     },
     closeSessionDetailModal() {
       $('#extraSessionDetailModal').hide();
     },
-    addSession(selectedSession) {
-      var result = this.plannerData.Unscheduled.filter(function(obj){return obj.name == selectedSession.name && obj.isAssigned == false}); //Find all sessions that belong to what has been chosen
-      var selectedResult = result[result.length - 1];
-      if (selectedResult.dateSelected == null) { //If the date is null dont add it and show error
+    addSession(selectedSession, index) {
+      var datePickerValue = $('#'+index).val().split(" ");
+      //Do some shuffling to get the day of the week
+      var formattedValue = datePickerValue[1] + " " + datePickerValue[0] + " " + datePickerValue[2] 
+      const formattedDate = new Date(formattedValue);
+      const dayofWeek = formattedDate.getDay(); // Sunday - Saturday : 0 - 6
+      console.log(dayofWeek)
+      if (isNaN(dayofWeek)) {
         alert("No date selected - Please choose a date that you want to complete your workout on.")
-      } else { 
-        switch (selectedResult.dateSelected) {
-          case "Monday":
-            this.validateSessionAndAddSession(this.sessionLengths.Monday, this.plannerData.Monday, selectedResult)
+      } else {
+        switch (dayofWeek) {
+          case 0: //Sunday
+            this.validateSessionAndAddSession(this.sessionLengths.Sunday, this.plannerData.Sunday, selectedSession) //Pass any allocated sessions data for that date and the session that has just been picked
             break;
-          case "Tuesday":
-            this.validateSessionAndAddSession(this.sessionLengths.Tuesday, this.plannerData.Tuesday, selectedResult)
+          case 1: 
+            this.validateSessionAndAddSession(this.sessionLengths.Monday, this.plannerData.Monday, selectedSession)
             break;
-          case "Wednesday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Wednesday, this.plannerData.Wednesday, selectedResult)
+          case 2: 
+            this.validateSessionAndAddSession(this.sessionLengths.Tuesday, this.plannerData.Tuesday, selectedSession)
             break;
-          case "Thursday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Thursday, this.plannerData.Thursday, selectedResult)
+          case 3: 
+            this.validateSessionAndAddSession(this.sessionLengths.Wednesday, this.plannerData.Wednesday, selectedSession)
             break;
-          case "Friday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Friday, this.plannerData.Friday, selectedResult)
+          case 4: 
+            this.validateSessionAndAddSession(this.sessionLengths.Thursday, this.plannerData.Thursday, selectedSession)
             break;
-          case "Saturday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Saturday, this.plannerData.Saturday, selectedResult)
+          case 5: 
+            this.validateSessionAndAddSession(this.sessionLengths.Friday, this.plannerData.Friday, selectedSession)
             break;
-          case "Sunday": 
-            this.validateSessionAndAddSession(this.sessionLengths.Sunday, this.plannerData.Sunday, selectedResult)
+          case 6: 
+            this.validateSessionAndAddSession(this.sessionLengths.Saturday, this.plannerData.Saturday, selectedSession)
             break;
         }
       }
@@ -669,14 +705,6 @@ export default {
       UnscheduledPlannerDataArray.find(x => x.name == cardSession.name && x.dateSelected == cardSession.dateSelected && x.isAssigned == true).isAssigned = false;
     }
   }
-}
-</script>
+})
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  
-}
-</style>
+</script>
