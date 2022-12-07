@@ -90,7 +90,7 @@
     </div>
 
   
-  <div class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="extraSessionDetailModal">
+  <div class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="extraSessionDetailModal">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
@@ -229,7 +229,8 @@ export default {
       const formattedDate = new Date(formattedValue);
       const dayofWeek = formattedDate.getDay(); // Sunday - Saturday : 0 - 6
       if (isNaN(dayofWeek)) {
-        alert("No date selected - Please choose a date that you want to complete your workout on.")
+        
+        alert(datePickerValue+formattedValuedateofWeek + "No date selected - Please choose a date that you want to complete your workout on.")
       } else {
         switch (dayofWeek) {
           case 0: //Sunday
