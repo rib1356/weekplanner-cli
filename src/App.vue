@@ -230,7 +230,7 @@ export default {
       const dayofWeek = formattedDate.getDay(); // Sunday - Saturday : 0 - 6
       if (isNaN(dayofWeek)) {
         
-        alert(datePickerValue+formattedValuedateofWeek + "No date selected - Please choose a date that you want to complete your workout on.")
+        alert(datePickerValue+formattedValue+dayofWeek + "No date selected - Please choose a date that you want to complete your workout on.")
       } else {
         switch (dayofWeek) {
           case 0: //Sunday
