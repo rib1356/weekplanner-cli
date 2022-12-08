@@ -8,7 +8,7 @@
           </a>
         <form class="form-inline">
           <a class="navbar-brand" href="#" style="float:left">
-            Rob
+            <p class="username">Rob</p>
             <i class="bi bi-person-circle"></i>
           </a>
         </form>
@@ -29,5 +29,11 @@ export default {
     background-color: #212322 !important;
     border-bottom: 2px solid white;
     height: 70px;
+  }
+
+  .username {
+    float:left;
+    margin-top: 10px;
+    margin-left: -4px;
   }
 </style>

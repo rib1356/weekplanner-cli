@@ -1,9 +1,11 @@
 <template>
   <Navbar/>
+  
   <div class="mx-3 my-2">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-4 session-container">
-        <h2 class="session-text">Sessions</h2>
+        <h2 class="session-text">Sessions</h2><router-link to="/sessionHistory">Home</router-link>
+        <router-view/>
         <div class="row"> <!-- Each of the session Cards is here-->
           <div class="col-sm-12 col-md-12 col-lg-12 session-card-row">
             <div v-for="(session, index) in plannerData.Unscheduled" :key="session.name">
@@ -13,7 +15,7 @@
         </div>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-8 session-container">
-        <h2 class="session-text">Weekly Log</h2>
+        <h2 class="session-text">Weekly Log </h2>
         <div class="weekday-grid-wrapper"> <!-- Using Grid template here instead of bootstraps rows/cols-->
           <div style="grid-column: 1; grid-row: 1;" class="weekday weekday-column">
             <p class="weekday-text">Monday</p>
@@ -21,7 +23,7 @@
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 1;" class="weekday session-cards-column" >
-              <div v-for="cardSession in plannerData.Monday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Monday" :key="cardSession.name" class="selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
             </div>
           </div>
@@ -31,7 +33,7 @@
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 2;" class="weekday session-cards-column">
-            <div v-for="cardSession in plannerData.Tuesday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+            <div v-for="cardSession in plannerData.Tuesday" :key="cardSession.name" class="selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
               <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
             </div>
           </div>
@@ -41,7 +43,7 @@
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 3;" class="weekday session-cards-column">
-              <div v-for="cardSession in plannerData.Wednesday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Wednesday" :key="cardSession.name" class="selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
               </div>
           </div>
@@ -51,7 +53,7 @@
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 4;" class="weekday session-cards-column">
-              <div v-for="cardSession in plannerData.Thursday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Thursday" :key="cardSession.name" class="selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
               </div>
           </div>
@@ -61,7 +63,7 @@
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 5;" class="weekday session-cards-column">
-              <div v-for="cardSession in plannerData.Friday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Friday" :key="cardSession.name" class="selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
               </div>
           </div>
@@ -71,7 +73,7 @@
             <p class="session-length-text" v-else>No Sessions</p>
           </div>
           <div style="grid-column: 2; grid-row: 6;" class="weekday session-cards-column">
-              <div v-for="cardSession in plannerData.Saturday" :key="cardSession.name" class="card selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
+              <div v-for="cardSession in plannerData.Saturday" :key="cardSession.name" class="selected-session-card" :style="{ backgroundColor: cardSession.type_colour}">
                 <ChosenSessionCard :chosenSessionComponent=cardSession  @removeSessionClick="removeSession(cardSession)"/>
               </div>
           </div>
@@ -225,12 +227,11 @@ export default {
     addSession(selectedSession, index) {
        var datePickerValue = $('#'+index).val().split("-") //dd-MM-yyyy
       // //Do some shuffling to get the day of the week
-      var formattedValue = datePickerValue[2] + " " + datePickerValue[1] + " " + datePickerValue[0] //yyyy-MM-dd
+      var formattedValue = datePickerValue[2] + "-" + datePickerValue[1] + "-" + datePickerValue[0] //yyyy-MM-dd
       const formattedDate = new Date(formattedValue);
       const dayofWeek = formattedDate.getDay(); // Sunday - Saturday : 0 - 6
       if (isNaN(dayofWeek)) {
-        
-        alert(datePickerValue+formattedValue+dayofWeek + "No date selected - Please choose a date that you want to complete your workout on.")
+        alert("No date selected - Please choose a date that you want to complete your workout on.")
       } else {
         switch (dayofWeek) {
           case 0: //Sunday
