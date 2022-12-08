@@ -11,8 +11,10 @@
             </div>
           </div>
         </div>
+           
       </div>
       <div class="col-sm-12 col-md-12 col-lg-8 session-container">
+        <button type="button" class="btn btn-success save-btn" @click="saveWeeklySession">Save <i class="bi bi-save"></i></button>
         <h2 class="session-text">Weekly Log </h2>
         <div class="weekday-grid-wrapper"> <!-- Using Grid template here instead of bootstraps rows/cols-->
           <div style="grid-column: 1; grid-row: 1;" class="weekday weekday-column">
@@ -88,7 +90,6 @@
         </div>
       </div>  
     </div>
-
   
   <div class="modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="extraSessionDetailModal">
     <div class="modal-dialog modal-dialog-scrollable">
@@ -149,8 +150,12 @@ import SessionCard from '../components/SessionCard.vue'
 import ChosenSessionCard from '../components/ChosenSessionCard.vue'
 import Navbar from '../components/Navbar.vue'
 
+
 import $ from 'jquery'
 import jsonData from '../../data.json' //Import the json data
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore' 
+import { db } from '@/firebase' 
+
 
 export default {
   name: 'App',
@@ -201,16 +206,50 @@ export default {
           },
         }
       },
+      sessionWeekCount: 0,
     }
   },
-  mounted() {
+  async mounted() {
     //On load of page after json data has been read assign some new variables
     for(var i = 0; i < this.plannerData.Unscheduled.length; i++) {
       this.plannerData.Unscheduled[i].isAssigned = false;
       this.plannerData.Unscheduled[i].dateSelected = null;
     }
-    },
+    const docRef = doc(db, "weeklySession/sessionCount"); //Get the number of weeks that have been saved
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) { //If exists increment and use locally when saving the next week
+      this.sessionWeekCount =  (docSnap.data().count) + 1;
+      console.log(this.sessionWeekCount)
+    } else {
+      console.log("No such document!");
+    }
+  },
   methods: {
+    async saveWeeklySession() {
+      var weekToSave = { //Create object to save
+        "Monday" : this.plannerData.Monday,
+        "Tuesday" : this.plannerData.Tuesday,
+        "Wednesday" : this.plannerData.Wednesday,
+        "Thursday" : this.plannerData.Thursday,
+        "Friday" : this.plannerData.Friday,
+        "Saturday" : this.plannerData.Saturday,
+        "Sunday" : this.plannerData.Sunday,
+      };
+      try {
+        await setDoc(doc(db, "weeklySession", "sessionWeek" + this.sessionWeekCount), weekToSave); //Save object to firebase
+        console.log("Document written with ID: ", "sessionWeek" + this.sessionWeekCount);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+      // Update the session week count
+      const countRef = doc(db, "weeklySession", "sessionCount");
+      await updateDoc(countRef, {
+        count: this.sessionWeekCount
+      });
+
+      alert("Your sessions for this week have been saved");
+      location.reload();
+    },
     sessionDateSelected(dateSelected, selectedSession) {
       var result  = this.plannerData.Unscheduled.filter(function(obj){return obj.name == selectedSession.name && obj.isAssigned == false}); //Find all sessions that belong to what has been chosen
       result[result.length - 1].dateSelected = dateSelected; //Assign the latest session in the array based of the length of session that are unassigned 

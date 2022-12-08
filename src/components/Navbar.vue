@@ -18,13 +18,8 @@
 </template>
 
 <script>
-// import TutorialDataService from "../services/weekPlannerService";
 export default {
   name: 'NavBar',
-  mounted() {
-    console.log("hello")
-    // TutorialDataService.getAll()
-  }
 }
 </script>
 

@@ -1,4 +1,4 @@
-import firebase from "../firebase/init.js";
+import firebase from "../firebase";
 
 const db = firebase.ref("/sessionweek1");
 
