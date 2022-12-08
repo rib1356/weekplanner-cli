@@ -150,6 +150,12 @@ select {
     height: 38px;
 }
 
+.save-btn {
+    display: inline;
+    float: right;
+    margin-top: 3px;
+}
+
 @media screen and (max-width: 575px) {
     .selected-session-card {
         width: 98%;
@@ -213,6 +219,7 @@ select {
         text-align: center;
         margin-bottom: 15px;
         width: 100%;
+        
     }
 
     .weekday-text {
