@@ -7,8 +7,8 @@
             Week Planner
           </a>
         <form class="form-inline">
-          <a class="navbar-brand" href="#" style="float:left">
-            <p class="username">Rob</p>
+          <a class="navbar-brand" href="/sessionHistory" style="float:left">
+            <p class="username">Rob</p> <i class="bi bi-chevron-double-down"></i>
             <i class="bi bi-person-circle"></i>
           </a>
         </form>
@@ -29,11 +29,26 @@ export default {
     background-color: #212322 !important;
     border-bottom: 2px solid white;
     height: 70px;
+    margin-top: -5px;
   }
 
   .username {
     float:left;
     margin-top: 10px;
     margin-left: -4px;
+    margin-right: 5px;
   }
+
+  .bi-chevron-double-down {
+    font-size: 30px;
+    padding-top: 3px;
+    display:inline-block;
+  }
+
+    /* .router {
+    display: inline-block;
+    color: white;
+    padding-top: 15px;
+    font-size: 16px;
+  } */
 </style>
