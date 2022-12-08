@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-dark bg-dark">
       <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="/">
             <img src="../../assets/latticeLogo.png" alt="latticeLogo" width="50" height="50" style="margin-left:10px">
             Week Planner
           </a>
@@ -18,8 +18,13 @@
 </template>
 
 <script>
+// import TutorialDataService from "../services/weekPlannerService";
 export default {
   name: 'NavBar',
+  mounted() {
+    console.log("hello")
+    // TutorialDataService.getAll()
+  }
 }
 </script>
 
