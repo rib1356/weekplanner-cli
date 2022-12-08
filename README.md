@@ -17,6 +17,9 @@ npm run build
 # weekplanner-task-vuejscli
 Week Planner Task that will be built using VueJS through npm and hosted online to display the ability to read/write from json or database
 
+#### Original Task
+- https://github.com/rib1356/weekplanner-task
+
 # Weekplanner
 
 This is a short programming task designed to let you demonstrate your skills in frontend web development. You should aim to spend around 2 hours on this task.
