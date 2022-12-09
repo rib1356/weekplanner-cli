@@ -356,10 +356,234 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  
+.page-background {
+    /* background-color: #14bcce; */
+    background-color: #212322;
+    /* background-color: #3182a9; */
+}
+
+.session-container {
+    border: solid 3px #212322;
+    border-radius: 20px;
+    background-color: #227dab;
+    height: fit-content;
+}
+
+.session-card-row { 
+    max-height: 80vh;
+    overflow-y: scroll;
+}
+
+.session-card {
+    --bs-card-spacer-y: 0.2rem;
+    --bs-card-spacer-x: 0.5rem;
+    border: 3px solid #212322 ;
+    margin-bottom: 5px;
+}
+
+.selected-session-card {
+    --bs-card-spacer-y: 0.2rem;
+    --bs-card-spacer-x: 0.5rem;
+    border: 3px solid #212322 ;
+    border-radius: 10px;
+    margin: 5px;
+    width: 48%;
+    display: inline-block;
+}
+
+.card-text {
+    margin-bottom: 0px;
+}
+
+.icon-card-text {
+    display: inline;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.card-icons {
+    font-size: 35px;
+}
+
+.modal-title {
+    text-align: center;
+}
+
+.modal-backdrop {
+    background-color: red;
+}
+
+.session-wrapper {
+    display: grid; 
+    grid-template-columns: 20% 80%; 
+    height: 80vh;
+}
+
+.weekday-grid-wrapper {
+    display: grid; 
+    grid-template-columns: 20% 80%; 
+    height: fit-content;
+    min-height: 80vh;
+}
+
+.weekday {
+    border: solid 2px #212322;
+    background-color: #d7e3e8;
+}
+
+.weekday-column {
+    border-radius: 10px 0px 0px 10px;
+    margin: 5px -1px 5px -1px;
+    background-color: #d7e3e8;
+}
+
+.session-cards-column {
+    border-radius: 0px 10px 10px 0px;
+    margin: 5px -1px 5px -1px;
+    min-height: auto;
+}
+
+.session-text {
+    text-align: center;
+    color: #212322;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #212322;
+    font-size: 28px;
+    padding-bottom: 5px;
+}
+
+::-webkit-scrollbar-track {
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+.weekday-text {
+    text-align: center;
+    margin-bottom: 0px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #212322;
+}
+
+.session-length-text {
+    text-align: center;
+    margin-bottom: 2px;
+    margin-top: -5px;
+    color: #212322;
+}
+
+.trash-icon {
+    float: right;
+    font-size: 30px;
+    margin-top: 1%;
+}
+
+.bi-person-circle {
+    color: white;
+    font-size: 35px;
+    display: block;
+    float: right;
+    padding-left: 15px;
+}
+
+input,
+select {
+    font-size: 100%;
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-top: 5px !important;
+    border: 2px solid black;
+    border-radius: 7px;
+    width: 100%;
+    height: 38px;
+}
+
+.save-btn {
+    display: inline;
+    float: right;
+    margin-top: 3px;
+}
+
+@media screen and (max-width: 575px) {
+    .selected-session-card {
+        width: 98%;
+    }
+
+}
+
+@media screen and (max-width: 475px) {
+    .card-icons {
+        font-size: 25px;
+    }
+
+    .icon-card-text {
+        margin-right: 0px;
+    }
+}
+
+@media screen and (max-width: 376px) {
+    .card-icons {
+        font-size: 20px;
+    }
+
+    .icon-card-text {
+        margin-right: 0px;
+    }
+}
+
+/* At this width stack the divs so the session picker is on top with the weekly table below */
+@media screen and (max-width: 992px) {
+
+    .session-container {
+        margin-top: 5px;
+    }
+
+    .weekday-grid-wrapper {
+        display: inline;
+        height: 100%;
+        margin-bottom:10px;
+        height: 100vh;
+    }
+
+    .session-card-row { 
+        max-height: 50vh;
+        overflow-y: scroll;
+    }
+
+    .weekday-column {
+        border-radius: 10px 10px 0px 0px;
+        margin: 5px 0px 5px 0px;
+
+    }
+
+    .session-cards-column {
+        border-radius: 0px 0px 10px 10px;
+        margin: -7px 0px 20px 0px;
+        width: 100%;
+        min-height: 30px;
+    }
+
+    .session-text {
+        text-align: center;
+        margin-bottom: 15px;
+        width: 100%;
+        
+    }
+
+    .weekday-text {
+        text-align: center;
+        margin-bottom: 0px;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .session-length-text {
+        text-align: center;
+        margin-bottom: 2px;
+        margin-top: -5px;
+    }
+
 }
 </style>

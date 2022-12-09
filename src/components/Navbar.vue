@@ -2,15 +2,19 @@
   <div>
     <nav class="navbar navbar-dark bg-dark">
       <div class="container-fluid">
-          <a class="navbar-brand" href="/">
+          <router-link to="/" style="text-decoration:none !important;">
+          <a class="navbar-brand" >
             <img src="../../assets/latticeLogo.png" alt="latticeLogo" width="50" height="50" style="margin-left:10px">
             Week Planner
           </a>
+          </router-link>
         <form class="form-inline">
-          <a class="navbar-brand" href="/sessionHistory" style="float:left">
-            <p class="username">Rob</p> <i class="bi bi-chevron-double-down"></i>
-            <i class="bi bi-person-circle"></i>
-          </a>
+          <router-link to="/sessionHistory">
+            <a class="navbar-brand" style="float:left">
+              <p class="username">Sesh History</p>
+            </a>
+          </router-link>
+          
         </form>
       </div>
     </nav>
@@ -29,14 +33,18 @@ export default {
     background-color: #212322 !important;
     border-bottom: 2px solid white;
     height: 70px;
-    margin-top: -5px;
+    margin-top: -10px;
   }
 
   .username {
     float:left;
     margin-top: 10px;
-    margin-left: -4px;
-    margin-right: 5px;
+    margin-right: -15px;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 
   .bi-chevron-double-down {
@@ -44,11 +52,4 @@ export default {
     padding-top: 3px;
     display:inline-block;
   }
-
-    /* .router {
-    display: inline-block;
-    color: white;
-    padding-top: 15px;
-    font-size: 16px;
-  } */
 </style>
