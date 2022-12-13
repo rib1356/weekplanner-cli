@@ -9,11 +9,31 @@
           </a>
           </router-link>
         <form class="form-inline">
-          <router-link to="/sessionHistory">
-            <a class="navbar-brand" style="float:left">
-              <p class="username">Sesh History</p>
-            </a>
-          </router-link>
+          <div class="dropdown dropstart">
+              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                Menu
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
+                <li>
+                  <router-link to="/" class="menu-links"><p>Home</p>
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/sessionHistory" class="menu-links"><p>Sesh History</p>
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/clientMessages" class="menu-links"><p>Client Message</p>
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/coachMessages" class="menu-links"><p>Coach Message</p>
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+         
           
         </form>
       </div>
@@ -45,6 +65,13 @@ export default {
     padding: 0px;
     padding-left: 5px;
     padding-right: 5px;
+  }
+
+  .menu-links {
+    text-align: center;
+color: white;
+margin-bottom: 0rem;
+text-decoration: none !important;
   }
 
   .bi-chevron-double-down {
